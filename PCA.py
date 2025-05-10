@@ -1,0 +1,62 @@
+import os
+import cv2
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+def load_images(dataset_path, image_shape=(100, 100)):
+    X = []  # Image vectors
+    y = []  # Labels
+    for subject_folder in sorted(os.listdir(dataset_path)):
+        subject_path = os.path.join(dataset_path, subject_folder)
+        if os.path.isdir(subject_path):
+            label = subject_folder  # e.g., "s1"
+            for img_file in os.listdir(subject_path):
+                img_path = os.path.join(subject_path, img_file)
+                print(f"Loading {img_path}")
+                img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+                # img = cv2.equalizeHist(img)  # Histogram equalization
+                img = cv2.resize(img, image_shape)
+                X.append(img.flatten())
+                y.append(label)
+                print(f"Loaded {img_path} with label {label}")
+    return np.array(X), np.array(y)
+
+def compute_pca(X, num_components):
+    mean_face = np.mean(X, axis=0)
+    X_centered = X - mean_face
+    cov_matrix = np.cov(X_centered, rowvar=False)
+    eigenvalues, eigenvectors = np.linalg.eigh(cov_matrix)
+    
+    # Sort by descending eigenvalue
+    idx = np.argsort(eigenvalues)[::-1]
+    eigenvectors = eigenvectors[:, idx]
+    eigenvectors = eigenvectors[:, :num_components]
+    return mean_face, eigenvectors, X_centered
+
+def project_faces(X_centered, eigenvectors):
+    return np.dot(X_centered, eigenvectors)
+
+def recognize_face(test_face, mean_face, eigenvectors, projected_faces, labels):
+    test_centered = test_face - mean_face
+    test_proj = np.dot(test_centered, eigenvectors)
+    distances = np.linalg.norm(projected_faces - test_proj, axis=1)
+    return labels[np.argmin(distances)]
+    # similarities = cosine_similarity([test_proj], projected_faces)[0]   #Cousine similarity
+    # best_index = np.argmax(similarities)
+    # return labels[best_index]
+
+from sklearn.model_selection import train_test_split
+
+X, y = load_images("archive")
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+
+mean_face, eigenvectors, X_train_centered = compute_pca(X_train, num_components=50)
+projected_train = project_faces(X_train_centered, eigenvectors)
+
+# Test
+correct = 0
+for i, test_face in enumerate(X_test):
+    label = recognize_face(test_face, mean_face, eigenvectors, projected_train, y_train)
+    if label == y_test[i]:
+        correct += 1
+
+print(f"Accuracy: {correct / len(y_test) * 100:.2f}%")
