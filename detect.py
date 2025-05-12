@@ -1,7 +1,7 @@
 import cv2
 # import numpy as np
 
-image = cv2.imread("archive\\s8\\9.pgm")
+image = cv2.imread("archive\\s4\\5.pgm")
 image = cv2.resize(image, (500, 500))
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
