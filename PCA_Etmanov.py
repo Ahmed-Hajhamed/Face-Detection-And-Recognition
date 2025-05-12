@@ -52,13 +52,13 @@ def recognize_face(test_face, mean_face, eigenvectors, projected_faces, labels):
 
 
 # ==== Load Data ====
-X_train = np.load("X_train.npy")
-X_test = np.load("X_test.npy")
-y_train = np.load("y_train.npy")
-y_test = np.load("y_test.npy")
-mean_face = np.load("mean_face.npy")
-eigenvectors = np.load("eigenvectors.npy")
-projected_train = np.load("projected_train.npy")
+X_train = np.load("PCA_DATA/X_train.npy")
+X_test = np.load("PCA_DATA/X_test.npy")
+y_train = np.load("PCA_DATA/y_train.npy")[0]
+y_test = np.load("PCA_DATA/y_test.npy")[0]
+mean_face = np.load("PCA_DATA/mean_face.npy")
+eigenvectors = np.load("PCA_DATA/eigenvectors.npy")
+projected_train = np.load("PCA_DATA/projected_train.npy")
 
 # ==== Parameters ====
 threshold = 0.1  # غيّر دا للتحكم في متى نرفض التصنيف
