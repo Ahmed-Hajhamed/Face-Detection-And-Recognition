@@ -61,7 +61,6 @@ class FaceRecognitionApp(QMainWindow):
         # Initialize variables
         self.original_image = None
         self.processed_image = None
-        self.face_detected = False
         self.pca_applied = False
         self.current_neighbor_index = 0
         self.neighbors = []
@@ -252,7 +251,6 @@ class FaceRecognitionApp(QMainWindow):
                     raise ValueError("Could not read image")
                 
                 # Reset states
-                self.face_detected = False
                 self.pca_applied = False
                 self.processed_image = None
                 self.neighbors = []

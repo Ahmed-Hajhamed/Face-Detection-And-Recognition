@@ -46,49 +46,34 @@ def recognize_face(test_face, mean_face, eigenvectors, projected_faces, labels, 
     file_paths = labels[1]
     # if np.min(distances) > distance_threshold:
     #     return None
-    return subjects[np.argmin(distances)], file_paths[np.argmin(distances)]
+    return [(subjects[i], file_paths[i]) for i in np.argsort(distances)[:4]]
 
-# X, y = load_images("archive")
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
-# X_train, y_train = load_images("dataset/train")
-# X_test, y_test = load_images("dataset/test")
+# # X, y = load_images("archive")
+# # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+# # X_train, y_train = load_images("dataset/train")
+# # X_test, y_test = load_images("dataset/test")
 
-# np.save("X_train.npy", X_train)
-# np.save("X_test.npy", X_test)
-# np.save("y_train.npy", y_train)
-# np.save("y_test.npy", y_test)
-X_train = np.load("PCA_DATA/X_train.npy")
-X_test = np.load("PCA_DATA/X_test.npy")
-y_train = np.load("PCA_DATA/y_train.npy")
-y_test = np.load("PCA_DATA/y_test.npy")
+# # np.save("X_train.npy", X_train)
+# # np.save("X_test.npy", X_test)
+# # np.save("y_train.npy", y_train)
+# # np.save("y_test.npy", y_test)
+# X_train = np.load("PCA_DATA/X_train.npy")
+# X_test = np.load("PCA_DATA/X_test.npy")
+# y_train = np.load("PCA_DATA/y_train.npy")
+# y_test = np.load("PCA_DATA/y_test.npy")
 
-# mean_face, eigenvectors, X_train_centered = compute_pca(X_train, num_components=50)
-# projected_train = project_faces(X_train_centered, eigenvectors)
-# np.save("mean_face.npy", mean_face)
-# np.save("eigenvectors.npy", eigenvectors)
-# np.save("projected_train.npy", projected_train)
-mean_face = np.load("PCA_DATA/mean_face.npy")
-eigenvectors = np.load("PCA_DATA/eigenvectors.npy")
-projected_train = np.load("PCA_DATA/projected_train.npy")
+# # mean_face, eigenvectors, X_train_centered = compute_pca(X_train, num_components=50)
+# # projected_train = project_faces(X_train_centered, eigenvectors)
+# # np.save("mean_face.npy", mean_face)
+# # np.save("eigenvectors.npy", eigenvectors)
+# # np.save("projected_train.npy", projected_train)
+# mean_face = np.load("PCA_DATA/mean_face.npy")
+# eigenvectors = np.load("PCA_DATA/eigenvectors.npy")
+# projected_train = np.load("PCA_DATA/projected_train.npy")
 
-# Test
-correct = 0
-for i, test_face in enumerate(X_test):
-    label = recognize_face(test_face, mean_face, eigenvectors, projected_train, y_train)[0]
-    if label == y_test[0][i]:
-        correct += 1
-
-print(f"Accuracy: {correct / len(y_test[0]) * 100:.2f}%")
-# test_path = "dataset/test/s35/9.pgm"
-# test_face = cv2.imread(test_path, cv2.IMREAD_GRAYSCALE)
-# test_face = cv2.resize(test_face, (100, 100))
-# test_face1 = test_face.flatten()
-# label, result_path = recognize_face(test_face1, mean_face, eigenvectors, projected_train, y_train)
-# hhhh = cv2.imread(test_path, cv2.IMREAD_GRAYSCALE)
-# hhhh = cv2.resize(hhhh, (500, 500))
-# cv2.imshow("Test Face", hhhh)
-# result = cv2.imread(result_path, cv2.IMREAD_GRAYSCALE)
-# result = cv2.resize(result, (500, 500))
-# cv2.imshow("Recognized Face", result)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+# # Test
+# correct = 0
+# for i, test_face in enumerate(X_test):
+#     label = recognize_face(test_face, mean_face, eigenvectors, projected_train, y_train)[0]
+#     if label == y_test[0][i]:
+#         correct += 1

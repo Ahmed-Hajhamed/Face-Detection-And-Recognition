@@ -9,7 +9,7 @@ from PCA import load_images, compute_pca, project_faces, recognize_face
 from sklearn.model_selection import train_test_split
 
 
-def load_pca_parameters(folder="pca_cache"):
+def load_pca_parameters(folder="PCA_DATA"):
     """Load PCA parameters from CSV files"""
     try:
         if not os.path.exists(folder):
@@ -27,8 +27,7 @@ def load_pca_parameters(folder="pca_cache"):
             'projected_faces': projected_faces,
             'labels': labels
         }
-    # ,
-    #         'dataset_images': dataset_images
+   
     except Exception as e:
         print(f"Error loading PCA parameters: {str(e)}")
         return None
@@ -65,7 +64,6 @@ class MainApplication(FaceRecognitionApp):
                 self.projected_faces = cached_data['projected_faces']
                 self.labels = cached_data['labels']
                 self.status_bar.setText("PCA parameters loaded from cache")
-                print(self.labels)
                 return
             else:
                 self.status_bar.setText("PCA computed but caching failed")
@@ -82,7 +80,7 @@ class MainApplication(FaceRecognitionApp):
         try:
             # Convert to grayscale for face detection
             gray = cv2.cvtColor(self.original_image, cv2.COLOR_BGR2GRAY)
-            
+
             # Load Haar Cascade for face detection
             face_cascade = cv2.CascadeClassifier(
                 cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -100,7 +98,7 @@ class MainApplication(FaceRecognitionApp):
             
             # Draw rectangle on the original image
             self.processed_image = self.original_image.copy()
-            # cv2.rectangle(self.processed_image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            
             for (x, y, w, h) in faces:
                 cv2.rectangle(self.processed_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
             
@@ -109,7 +107,6 @@ class MainApplication(FaceRecognitionApp):
             
             # Crop and save the detected face for PCA processing
             self.detected_face = gray[y:y+h, x:x+w]
-            self.face_detected = True
             
             self.status_bar.setText(f"Detected 1 face - ready for PCA")
             
@@ -117,51 +114,33 @@ class MainApplication(FaceRecognitionApp):
             self.status_bar.setText("Face detection failed")
             QMessageBox.critical(self, "Error", f"Face detection error: {str(e)}")
     
-    def load_neighbor(self, labels):
-        """Load the neighbor image based on the current index"""
-        self.neighbors = []
-        # for label in labels:
-        folder_path = "dataset/train"+"/" + labels
-        # Get list of all .pgm files in the s3 folder
-        image_files = [f for f in os.listdir(folder_path) if f.endswith('.pgm')]
-        
-        # Display each image
-        for img_file in image_files:
-            img_path = os.path.join(folder_path, img_file)
-            img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)  # Read as grayscale
-            img_resized = cv2.resize(img, self.image_shape)  # Resize to match PCA input size
-            self.neighbors.append(img_resized)  # Append to neighbors list
-        
-        return self.neighbors
-        
+    def load_neighbors(self, result_path):
+        result = cv2.imread(result_path, cv2.IMREAD_GRAYSCALE)
+        result = cv2.resize(result, (500, 500))
+        return result
+    
     def apply_pca(self):
         """Apply PCA to the detected face and find similar faces"""
-        if not self.face_detected:
-            self.status_bar.setText("Detect a face first before applying PCA")
-            return
-            
         try:
             self.status_bar.setText("Processing face with PCA...")
             QApplication.processEvents()  # Update UI
-            
+            self.neighbors = []
             # Prepare the detected face
-            face_resized = cv2.resize(self.detected_face, self.image_shape)
+            image = cv2.cvtColor(self.original_image, cv2.COLOR_BGR2GRAY)
+            face_resized = cv2.resize(image, self.image_shape)
             face_vector = face_resized.flatten()
             
             # Recognize the face and find similar faces
-            recognized_label = recognize_face(
-                face_vector, 
-                self.mean_face, 
-                self.eigenvectors, 
-                self.projected_faces, 
-                self.labels
-            )
-            
-            # Find all images with this label (the recognized person)
-            recognized_label = [label
-                            for i, label in enumerate(self.labels) 
-                            if label == recognized_label][0]
-            self.neighbors = self.load_neighbor(recognized_label)
+            result = recognize_face(
+                                                face_vector, 
+                                                self.mean_face, 
+                                                self.eigenvectors, 
+                                                self.projected_faces, 
+                                                self.labels
+                                            )
+            for recognized_label, result_path in result:
+                result_path = result_path.replace("\\", "/")
+                self.neighbors.append(self.load_neighbors(result_path))
             
             # Reset neighbor navigation
             self.current_neighbor_index = 0
