@@ -42,11 +42,21 @@ def recognize_face(test_face, mean_face, eigenvectors, projected_faces, labels):
 
 # X, y = load_images("archive")
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
-X_train, y_train = load_images("dataset/train")
-X_test, y_test = load_images("dataset/test")
+# X_train, y_train = load_images("dataset/train")
+# X_test, y_test = load_images("dataset/test")
 
-mean_face, eigenvectors, X_train_centered = compute_pca(X_train, num_components=50)
-projected_train = project_faces(X_train_centered, eigenvectors)
+X_train = np.load("X_train.npy")
+X_test = np.load("X_test.npy")
+y_train = np.load("y_train.npy")
+y_test = np.load("y_test.npy")
+
+
+# mean_face, eigenvectors, X_train_centered = compute_pca(X_train, num_components=50)
+# projected_train = project_faces(X_train_centered, eigenvectors)
+
+mean_face = np.load("mean_face.npy")
+eigenvectors = np.load("eigenvectors.npy")
+projected_train = np.load("projected_train.npy")
  
 # Test
 correct = 0
