@@ -13,13 +13,11 @@ def load_images(dataset_path, image_shape=(100, 100)):
             label = subject_folder  # e.g., "s1"
             for img_file in os.listdir(subject_path):
                 img_path = os.path.join(subject_path, img_file)
-                print(f"Loading {img_path}")
                 img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
                 img = cv2.resize(img, image_shape)
                 X.append(img.flatten())
                 subjects.append(label)
                 file_paths.append(img_path)
-                print(f"Loaded {img_path} with label {label}")
     y = [subjects, file_paths]
     return np.array(X), np.array(y)
 
@@ -38,14 +36,12 @@ def compute_pca(X, num_components):
 def project_faces(X_centered, eigenvectors):
     return np.dot(X_centered, eigenvectors)
 
-def recognize_face(test_face, mean_face, eigenvectors, projected_faces, labels, distance_threshold=2500):
+def recognize_face(test_face, mean_face, eigenvectors, projected_faces, labels):
     test_centered = test_face - mean_face
     test_proj = np.dot(test_centered, eigenvectors)
     distances = np.linalg.norm(projected_faces - test_proj, axis=1)
     subjects = labels[0]
     file_paths = labels[1]
-    # if np.min(distances) > distance_threshold:
-    #     return None
     return [(subjects[i], file_paths[i]) for i in np.argsort(distances)[:4]]
 
 # # X, y = load_images("archive")

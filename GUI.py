@@ -197,7 +197,7 @@ class FaceRecognitionApp(QMainWindow):
         detect_btn.clicked.connect(self.detect_face)
         buttons_layout.addWidget(detect_btn)
         
-        pca_btn = QPushButton("Compute PCA")
+        pca_btn = QPushButton("Recognize Face")
         pca_btn.setStyleSheet(button_style)
         pca_btn.clicked.connect(self.apply_pca)
         buttons_layout.addWidget(pca_btn)
@@ -241,7 +241,7 @@ class FaceRecognitionApp(QMainWindow):
     
     def load_image(self):
         """Load an image file and display it in the original image panel"""
-        file_path, _ = QFileDialog.getOpenFileName(self, "Open Image", "", 
+        file_path, _ = QFileDialog.getOpenFileName(self, "Open Image", "dataset/test", 
                                                 "Image Files (*.png *.jpg *.jpeg *.bmp *.pgm)")
         if file_path:
             try:
