@@ -33,29 +33,25 @@ def load_pca_parameters(folder="PCA_DATA"):
         return None
 
 
-
-
 class MainApplication(FaceRecognitionApp):
     def __init__(self):
         super().__init__()
         
-        # Initialize PCA variables
         self.mean_face = None
         self.eigenvectors = None
         self.projected_faces = None
         self.labels = None
-        self.image_shape = (100, 100)  # Standard size for PCA processing
+        self.image_shape = (100, 100)
         
-        # Load the dataset and compute PCA when the app starts
+        # Load the dataset and compute PCA
         self.load_dataset_and_pca()
     
     def load_dataset_and_pca(self):
         """Load dataset and compute PCA (or load from cache if available)"""
         try:
             self.status_bar.setText("Loading dataset and computing PCA...")
-            QApplication.processEvents()  # Update UI
+            QApplication.processEvents()
 
-            # Try to load from cache first
             cached_data = load_pca_parameters()
             
             if cached_data:
@@ -93,19 +89,13 @@ class MainApplication(FaceRecognitionApp):
                 QMessageBox.information(self, "No Faces", "No faces were detected in the image")
                 return
                 
-            # For simplicity, we'll use the first detected face
-            # (x, y, w, h) = faces[0]
-            
-            # Draw rectangle on the original image
             self.processed_image = self.original_image.copy()
             
             for (x, y, w, h) in faces:
                 cv2.rectangle(self.processed_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
             
-            # Display the result
             self.display_image(self.processed_image, self.original_image_label)
             
-            # Crop and save the detected face for PCA processing
             self.detected_face = gray[y:y+h, x:x+w]
             
             self.status_bar.setText(f"Detected 1 face - ready for PCA")
