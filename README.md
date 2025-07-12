@@ -10,17 +10,19 @@ A Python project that performs **face detection** and **face recognition** using
 
 1. **Dataset Structure**  
    Organize your data into:
+```
 dataset/
 ├─ s1/
 │ ├─ img1.jpg
 │ └─ ...
 ├─ s2/
 └─ ...
+```
 
-2. **Face Detection & Cropping**  
+3. **Face Detection & Cropping**  
 Detects faces in each image using Haar cascades, draws bounding rectangles, crops and resizes faces for recognition.
 
-3. **PCA / Eigenfaces**  
+4. **PCA / Eigenfaces**  
 - Mean-centering and covariance matrix computation  
 - Eigen decomposition (PCA) to find principal components (“eigenfaces”)  
 - Projects faces into lower-dimensional PCA space
@@ -37,11 +39,11 @@ Detects faces in each image using Haar cascades, draws bounding rectangles, crop
 
 ## ⚙️ Installation & Dependencies
 
-```bash
+```
 pip install numpy opencv-python scikit-learn matplotlib
 ```
 🔧 Usage
-```bash
+```
 python main.py \
   --dataset dataset/ \
   --mode train \
