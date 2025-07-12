@@ -27,17 +27,12 @@ dataset/
 Detects faces in each image using Haar cascades, draws bounding rectangles, crops and resizes faces for recognition.
 
 4. **PCA / Eigenfaces**  
-- Mean-centering and covariance matrix computation  
+- Mean-centering and covariance matrix computation 
 - Eigen decomposition (PCA) to find principal components (“eigenfaces”)  
 - Projects faces into lower-dimensional PCA space
 
 4. **Face Recognition**  
 - Recognition via nearest neighbor in PCA space  
-- (Optional) SVM classifier for trained-level classification  
-
-5. **Evaluation**  
-- Supports train/test splitting (e.g., 80/20, k-fold, leave-one-out)  
-- Outputs accuracy metrics and confusion matrices  
 
 ---
 
