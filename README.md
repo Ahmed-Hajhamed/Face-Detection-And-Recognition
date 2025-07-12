@@ -1,8 +1,11 @@
 # Face-Detection-And-Recognition
+<img width="1400" height="800" alt="Python 3 11 7_13_2025 2_51_45 AM" src="https://github.com/user-attachments/assets/a1f27af5-1af4-4c17-b697-d1d93e9de107" />
+
 A Python project that performs **face detection** and **face recognition** using:
 - OpenCV’s Haar Cascade for real-time face detection
 - PCA (Eigenfaces) for facial feature extraction and recognition
 - Optional SVM classifier for enhanced accuracy
+
 
 ---
 
@@ -74,12 +77,15 @@ Nearest Neighbor based on Euclidean distance in PCA space
 
 Evaluation:
 
-Calculates accuracy and ROC curve
+ROC curve:
+
+<img width="1500" height="1500" alt="ROC_Curve" src="https://github.com/user-attachments/assets/1d27aa93-69e6-4b4a-b6f0-4f542cb23c34" />
 
 📋 Results
 Accuracy: 93.5 %
 
 Snapshots:
-**Subject 39**
-<img width="464" height="565" alt="Screenshot 2025-05-13 210019" src="https://github.com/user-attachments/assets/4007b05e-de6b-46b7-bc66-aa3dfa3cbbda" /> <img width="545" height="545" alt="s39" src="https://github.com/user-attachments/assets/5c76c06b-55cb-4071-a78d-76c94012d120" />
+<img width="1400" height="800" alt="Python 3 11 7_13_2025 2_51_23 AM" src="https://github.com/user-attachments/assets/9c5f3dba-8b29-4b7c-8f95-56fef49720f6" />
 
+
+<img width="1400" height="800" alt="Python 3 11 7_13_2025 2_50_45 AM" src="https://github.com/user-attachments/assets/6b10d263-8649-40ec-95bc-a1acec5ea587" />
