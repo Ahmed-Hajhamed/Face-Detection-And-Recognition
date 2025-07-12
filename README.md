@@ -46,25 +46,7 @@ Detects faces in each image using Haar cascades, draws bounding rectangles, crop
 ```
 pip install numpy opencv-python scikit-learn matplotlib
 ```
-🔧 Usage
-```
-python main.py \
-  --dataset / \
-  --mode train \
-  --n_components 50 \
-  --split 40 / 60 %
-```
-Modes:
-train: prepare data, compute PCA & classifier, save model
-
-test: load model and evaluate accuracy
-
-recog: recognize faces in images or webcam
-
-Parameters:
---n_components: number of PCA components (eigenfaces)
-
---split: train/test split ratio (e.g., 0.2 = 20% test)
+Run ``` main.py ```
 
 📈 How It Works
 Data Loading: Crops faces and flattens into vectors
