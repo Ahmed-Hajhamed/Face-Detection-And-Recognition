@@ -12,11 +12,12 @@ A Python project that performs **face detection** and **face recognition** using
    Organize your data into:
 ```
 dataset/
-├─ s1/
-│ ├─ img1.jpg
-│ └─ ...
-├─ s2/
-└─ ...
+├─ Train ├─ s1/
+|        │ ├─ img1.pgm
+|        │ └─ ...
+|        ├─ s2/
+|        └─ ...
+├─ Test  ├─ ...
 ```
 
 3. **Face Detection & Cropping**  
@@ -45,10 +46,10 @@ pip install numpy opencv-python scikit-learn matplotlib
 🔧 Usage
 ```
 python main.py \
-  --dataset dataset/ \
+  --dataset / \
   --mode train \
   --n_components 50 \
-  --split 0.2
+  --split 40 / 60 %
 ```
 Modes:
 train: prepare data, compute PCA & classifier, save model
@@ -77,3 +78,8 @@ Calculates accuracy and ROC curve
 
 📋 Results
 Accuracy: 93.5 %
+
+Snapshots:
+**Subject 39**
+<img width="464" height="565" alt="Screenshot 2025-05-13 210019" src="https://github.com/user-attachments/assets/4007b05e-de6b-46b7-bc66-aa3dfa3cbbda" /> <img width="545" height="545" alt="s39" src="https://github.com/user-attachments/assets/5c76c06b-55cb-4071-a78d-76c94012d120" />
+
